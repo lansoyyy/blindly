@@ -1,0 +1,52 @@
+import 'package:flutter/material.dart';
+import 'screens/splash_screen.dart';
+import 'screens/landing_screen.dart';
+import 'screens/account_setup_screen.dart';
+import 'screens/image_upload_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/find_match_screen.dart';
+import 'screens/mechanics_screen.dart';
+import 'screens/anonymous_chat_screen.dart';
+import 'screens/user_profile_screen.dart';
+import 'utils/colors.dart';
+
+void main() {
+  runApp(const BlindlyApp());
+}
+
+class BlindlyApp extends StatelessWidget {
+  const BlindlyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Blindly',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: primary,
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+        fontFamily: 'Regular',
+        scaffoldBackgroundColor: background,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/landing': (context) => const LandingScreen(),
+        '/setup': (context) => const AccountSetupScreen(),
+        '/upload-images': (context) => const ImageUploadScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/find-match': (context) => const FindMatchScreen(),
+        '/mechanics': (context) => const MechanicsScreen(),
+        '/anonymous-chat': (context) => const AnonymousChatScreen(),
+        '/user_profile': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return UserProfileScreen(userData: args);
+        },
+      },
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
