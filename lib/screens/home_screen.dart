@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
+import '../services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,18 +10,46 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // Demo user data - in real app this would come from user profile
-  final String _userName = "Sarah Garcia";
-  final String _userAge = "25";
-  final String _userCity = "Manila";
-  final String _userBio =
-      "Love exploring new places and trying different cuisines. Looking for someone who shares the same passion for adventure and good conversations.";
+  final AuthService _authService = AuthService();
+
+  // User data will be loaded from Firebase
+  String _userName = "Loading...";
+  String _userAge = "--";
+  String _userBio = "Loading...";
   List<String> _userImages = [
     'assets/images/demo_user_1.jpg',
     'assets/images/demo_user_2.jpg',
     'assets/images/demo_user_3.jpg',
     'assets/images/demo_user_4.jpg',
   ];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final userData = await _authService.getUserProfile();
+      if (userData != null && mounted) {
+        setState(() {
+          _userName = userData['name'] ?? 'Anonymous User';
+          _userAge = userData['age']?.toString() ?? '--';
+          _userBio = userData['bio'] ?? 'No bio available';
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,28 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: textLight,
                       fontFamily: 'Bold',
                     ),
-                  ),
-
-                  const SizedBox(height: 5),
-
-                  // Location
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.location_on,
-                        color: primary,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        _userCity,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: textGrey,
-                          fontFamily: 'Regular',
-                        ),
-                      ),
-                    ],
                   ),
 
                   const SizedBox(height: 10),

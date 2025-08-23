@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import '../utils/colors.dart';
+import '../services/auth_service.dart';
 
 class ImageUploadScreen extends StatefulWidget {
   const ImageUploadScreen({super.key});
@@ -10,6 +11,7 @@ class ImageUploadScreen extends StatefulWidget {
 }
 
 class _ImageUploadScreenState extends State<ImageUploadScreen> {
+  final AuthService _authService = AuthService();
   File? _selectedAvatar;
   final List<File?> _selectedImages = List.filled(4, null);
   int _uploadedCount = 0;
@@ -556,10 +558,27 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
     });
   }
 
-  void _handleContinue() {
+  void _handleContinue() async {
     if (_uploadedCount >= 5 && _selectedAvatar != null) {
-      // Navigate to home/profile screen
-      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+      try {
+        // Mark images as uploaded
+        await _authService.markImagesAsUploaded();
+
+        // Navigate to home screen
+        if (mounted) {
+          Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+        }
+      } catch (e) {
+        print('Error marking images as uploaded: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to save images. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
     }
   }
 }

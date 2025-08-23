@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
+import '../services/auth_service.dart';
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({super.key});
@@ -9,7 +10,9 @@ class LandingScreen extends StatefulWidget {
 }
 
 class _LandingScreenState extends State<LandingScreen> {
+  final AuthService _authService = AuthService();
   bool _showMechanics = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -223,25 +226,34 @@ class _LandingScreenState extends State<LandingScreen> {
                               ],
                             ),
                             child: TextButton(
-                              onPressed: () {
-                                // Navigate to account setup
-                                Navigator.pushNamed(context, '/setup');
-                              },
+                              onPressed: _isLoading ? null : _handleContinue,
                               style: TextButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                               ),
-                              child: const Text(
-                                'Continue',
-                                style: TextStyle(
-                                  color: buttonText,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: 'Medium',
-                                ),
-                              ),
+                              child: _isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                          buttonText,
+                                        ),
+                                      ),
+                                    )
+                                  : const Text(
+                                      'Continue',
+                                      style: TextStyle(
+                                        color: buttonText,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: 'Medium',
+                                      ),
+                                    ),
                             ),
                           ),
 
@@ -328,5 +340,48 @@ class _LandingScreenState extends State<LandingScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _handleContinue() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Sign in anonymously
+      final result = await _authService.signInAnonymously();
+
+      if (result != null) {
+        // AuthStateWrapper will handle navigation automatically
+        // based on user's setup status
+        print('User signed in anonymously: ${result.user?.uid}');
+      } else {
+        // Show error message
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to sign in. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error signing in: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('An error occurred. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 }

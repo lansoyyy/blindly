@@ -1,6 +1,7 @@
 import 'package:finger_on_the_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'widgets/auth_state_wrapper.dart';
 import 'screens/splash_screen.dart';
 import 'screens/landing_screen.dart';
 import 'screens/account_setup_screen.dart';
@@ -10,6 +11,7 @@ import 'screens/find_match_screen.dart';
 import 'screens/mechanics_screen.dart';
 import 'screens/anonymous_chat_screen.dart';
 import 'screens/user_profile_screen.dart';
+import 'screens/identities_revealed_screen.dart';
 import 'utils/colors.dart';
 
 void main() async {
@@ -38,9 +40,9 @@ class BlindlyApp extends StatelessWidget {
         fontFamily: 'Regular',
         scaffoldBackgroundColor: background,
       ),
-      initialRoute: '/',
+      home: AuthStateWrapper(),
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/splash': (context) => const SplashScreen(),
         '/landing': (context) => const LandingScreen(),
         '/setup': (context) => const AccountSetupScreen(),
         '/upload-images': (context) => const ImageUploadScreen(),
@@ -52,6 +54,16 @@ class BlindlyApp extends StatelessWidget {
           final args = ModalRoute.of(context)!.settings.arguments
               as Map<String, dynamic>;
           return UserProfileScreen(userData: args);
+        },
+        '/identities-revealed': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return IdentitiesRevealedScreen(
+            userAName: args['userAName'],
+            userAAge: args['userAAge'],
+            userBName: args['userBName'],
+            userBAge: args['userBAge'],
+          );
         },
       },
       debugShowCheckedModeBanner: false,

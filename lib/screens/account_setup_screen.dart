@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/colors.dart';
+import '../services/auth_service.dart';
 
 class AccountSetupScreen extends StatefulWidget {
   const AccountSetupScreen({super.key});
@@ -9,6 +10,7 @@ class AccountSetupScreen extends StatefulWidget {
 }
 
 class _AccountSetupScreenState extends State<AccountSetupScreen> {
+  final AuthService _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _ageController = TextEditingController();
@@ -16,62 +18,6 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
   String? _selectedGender;
   String? _selectedPreference;
-  String? _selectedCity;
-
-  // Philippines major cities
-  final List<String> _philippineCities = [
-    'Manila',
-    'Quezon City',
-    'Caloocan',
-    'Las Piñas',
-    'Makati',
-    'Malabon',
-    'Mandaluyong',
-    'Marikina',
-    'Muntinlupa',
-    'Navotas',
-    'Parañaque',
-    'Pasay',
-    'Pasig',
-    'San Juan',
-    'Taguig',
-    'Valenzuela',
-    'Pateros',
-    'Cebu City',
-    'Davao City',
-    'Zamboanga City',
-    'Antipolo',
-    'Cagayan de Oro',
-    'Bacolod',
-    'Iloilo City',
-    'General Santos',
-    'Iligan',
-    'Mandaue',
-    'Dagupan',
-    'Baguio',
-    'Butuan',
-    'Angeles',
-    'Olongapo',
-    'Batangas City',
-    'San Fernando (La Union)',
-    'San Fernando (Pampanga)',
-    'Laoag',
-    'Tarlac City',
-    'San Carlos (Pangasinan)',
-    'Urdaneta',
-    'Cabanatuan',
-    'San Jose del Monte',
-    'Malolos',
-    'Meycauayan',
-    'Santa Rosa',
-    'Biñan',
-    'Cabuyao',
-    'San Pablo',
-    'Lucena',
-    'Tayabas',
-    'Puerto Princesa',
-    'Other',
-  ];
 
   @override
   void dispose() {
@@ -204,23 +150,6 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                         const SizedBox(height: 10),
 
                         _buildPreferenceSelection(),
-
-                        const SizedBox(height: 20),
-
-                        // City Selection
-                        const Text(
-                          'City',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: textLight,
-                            fontFamily: 'Medium',
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        _buildCityDropdown(),
 
                         const SizedBox(height: 20),
 
@@ -433,49 +362,6 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
     );
   }
 
-  Widget _buildCityDropdown() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: _selectedCity != null ? primary : Colors.transparent,
-          width: 2,
-        ),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedCity,
-          hint: const Text(
-            'Select your city',
-            style: TextStyle(
-              color: textGrey,
-              fontFamily: 'Regular',
-            ),
-          ),
-          icon: const Icon(Icons.keyboard_arrow_down, color: primary),
-          dropdownColor: surface,
-          style: const TextStyle(
-            color: textLight,
-            fontFamily: 'Regular',
-          ),
-          onChanged: (newValue) {
-            setState(() {
-              _selectedCity = newValue;
-            });
-          },
-          items: _philippineCities.map<DropdownMenuItem<String>>((String city) {
-            return DropdownMenuItem<String>(
-              value: city,
-              child: Text(city),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-
   Widget _buildBioField() {
     return Container(
       decoration: BoxDecoration(
@@ -506,13 +392,36 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
     );
   }
 
-  void _handleContinue() {
+  void _handleContinue() async {
     if (_formKey.currentState!.validate() &&
         _selectedGender != null &&
-        _selectedPreference != null &&
-        _selectedCity != null) {
-      // Navigate to image upload screen
-      Navigator.pushNamed(context, '/upload-images');
+        _selectedPreference != null) {
+      try {
+        // Save user profile data
+        await _authService.saveUserProfile(
+          name: _nameController.text.trim(),
+          age: _ageController.text.trim(),
+          gender: _selectedGender!,
+          preference: _selectedPreference!,
+          city: '', // Empty city since we removed the field
+          bio: _bioController.text.trim(),
+        );
+
+        // Navigate to image upload screen
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/upload-images');
+        }
+      } catch (e) {
+        print('Error saving profile: $e');
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Failed to save profile. Please try again.'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
