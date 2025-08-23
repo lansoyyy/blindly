@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
-import '../screens/splash_screen.dart';
-import '../screens/landing_screen.dart';
-import '../screens/account_setup_screen.dart';
-import '../screens/image_upload_screen.dart';
+import '../screens/auth/splash_screen.dart';
+import '../screens/auth/landing_screen.dart';
+import '../screens/auth/account_setup_screen.dart';
+import '../screens/auth/image_upload_screen.dart';
 import '../screens/home_screen.dart';
 
 class AuthStateWrapper extends StatelessWidget {

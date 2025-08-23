@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import '../utils/colors.dart';
-import '../services/auth_service.dart';
+import '../../utils/colors.dart';
+import '../../services/auth_service.dart';
 
 class ImageUploadScreen extends StatefulWidget {
   const ImageUploadScreen({super.key});

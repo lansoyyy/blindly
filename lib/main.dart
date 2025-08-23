@@ -2,16 +2,16 @@ import 'package:finger_on_the_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'widgets/auth_state_wrapper.dart';
-import 'screens/splash_screen.dart';
-import 'screens/landing_screen.dart';
-import 'screens/account_setup_screen.dart';
-import 'screens/image_upload_screen.dart';
+import 'screens/auth/splash_screen.dart';
+import 'screens/auth/landing_screen.dart';
+import 'screens/auth/account_setup_screen.dart';
+import 'screens/auth/image_upload_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/find_match_screen.dart';
 import 'screens/mechanics_screen.dart';
-import 'screens/anonymous_chat_screen.dart';
+import 'screens/chat/anonymous_chat_screen.dart';
 import 'screens/user_profile_screen.dart';
-import 'screens/identities_revealed_screen.dart';
+import 'screens/chat/identities_revealed_screen.dart';
 import 'utils/colors.dart';
 
 void main() async {
