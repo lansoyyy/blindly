@@ -677,169 +677,227 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Celebration icon
-              const Icon(
-                Icons.celebration,
-                color: accent,
-                size: 50,
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [primary.withOpacity(0.95), accent.withOpacity(0.95)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-
-              const SizedBox(height: 20),
-
-              const Text(
-                '🎉 Identities Revealed!',
-                style: TextStyle(
-                  color: textLight,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Bold',
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
                 ),
-              ),
-
-              const SizedBox(height: 15),
-
-              // User avatars row
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // User A Avatar
-                  Column(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primary,
-                          boxShadow: [
-                            BoxShadow(
-                              color: primary.withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          color: textLight,
-                          size: 30,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _userAName,
-                        style: const TextStyle(
-                          color: textLight,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Medium',
-                        ),
-                      ),
-                      Text(
-                        _userAAge,
-                        style: const TextStyle(
-                          color: textGrey,
-                          fontSize: 12,
-                          fontFamily: 'Regular',
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  // Heart icon between users
-                  const Icon(
-                    Icons.favorite,
-                    color: accent,
-                    size: 30,
-                  ),
-
-                  // User B Avatar
-                  Column(
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: accent,
-                          boxShadow: [
-                            BoxShadow(
-                              color: accent.withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          color: textLight,
-                          size: 30,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _userBName,
-                        style: const TextStyle(
-                          color: textLight,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Medium',
-                        ),
-                      ),
-                      Text(
-                        _userBAge,
-                        style: const TextStyle(
-                          color: textGrey,
-                          fontSize: 12,
-                          fontFamily: 'Regular',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              const Text(
-                'You can now see each other\'s real profiles!',
-                style: TextStyle(
-                  color: textGrey,
-                  fontFamily: 'Regular',
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Confetti/Celebration icon
+                const Icon(
+                  Icons.celebration,
+                  color: Colors.amber,
+                  size: 56,
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-          actions: [
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [accent, accent.withOpacity(0.8)],
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'Continue Chat',
+                const SizedBox(height: 12),
+                // Main message
+                const Text(
+                  'Identities Revealed!',
                   style: TextStyle(
                     color: textLight,
-                    fontFamily: 'Medium',
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Bold',
+                    letterSpacing: 1.2,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'You can now see each other\'s real profiles!',
+                  style: TextStyle(
+                    color: textLight,
+                    fontSize: 16,
+                    fontFamily: 'Regular',
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 28),
+                // Avatars row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // User A Avatar
+                    Column(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [primary, primary.withOpacity(0.7)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: primary.withOpacity(0.5),
+                                blurRadius: 18,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.person,
+                            color: textLight,
+                            size: 40,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          _userAName,
+                          style: const TextStyle(
+                            color: textLight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Medium',
+                          ),
+                        ),
+                        Text(
+                          _userAAge,
+                          style: const TextStyle(
+                            color: textGrey,
+                            fontSize: 13,
+                            fontFamily: 'Regular',
+                          ),
+                        ),
+                      ],
+                    ),
+                    // Animated heart
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 1.0, end: 1.2),
+                      duration: const Duration(milliseconds: 800),
+                      curve: Curves.easeInOut,
+                      builder: (context, scale, child) {
+                        return Transform.scale(
+                          scale: scale,
+                          child: const Icon(
+                            Icons.favorite,
+                            color: Colors.pinkAccent,
+                            size: 40,
+                          ),
+                        );
+                      },
+                      onEnd: () {},
+                    ),
+                    // User B Avatar
+                    Column(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              colors: [accent, accent.withOpacity(0.7)],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: accent.withOpacity(0.5),
+                                blurRadius: 18,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.person,
+                            color: textLight,
+                            size: 40,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          _userBName,
+                          style: const TextStyle(
+                            color: textLight,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'Medium',
+                          ),
+                        ),
+                        Text(
+                          _userBAge,
+                          style: const TextStyle(
+                            color: textGrey,
+                            fontSize: 13,
+                            fontFamily: 'Regular',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                // Divider
+                Container(
+                  height: 1.5,
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        primary.withOpacity(0.2),
+                        textLight.withOpacity(0.3),
+                        accent.withOpacity(0.2)
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                const SizedBox(height: 10),
+                // Continue Button
+                Container(
+                  width: double.infinity,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [accent, accent.withOpacity(0.8)],
+                    ),
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: accent.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text(
+                      'Continue Chat',
+                      style: TextStyle(
+                        color: textLight,
+                        fontFamily: 'Medium',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         );
       },
     );

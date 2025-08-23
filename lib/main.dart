@@ -1,3 +1,5 @@
+import 'package:finger_on_the_app/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'screens/splash_screen.dart';
 import 'screens/landing_screen.dart';
@@ -10,7 +12,13 @@ import 'screens/anonymous_chat_screen.dart';
 import 'screens/user_profile_screen.dart';
 import 'utils/colors.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    name: 'blindly-bd0d3',
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const BlindlyApp());
 }
 
