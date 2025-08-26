@@ -31,75 +31,76 @@ class _LandingScreenState extends State<LandingScreen> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                const Spacer(),
+                const Spacer(flex: 1),
 
                 // App Logo and Name
                 Container(
-                  width: 100,
-                  height: 100,
+                  width: 120,
+                  height: 120,
                   decoration: BoxDecoration(
                     color: primary,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(25),
                     boxShadow: [
                       BoxShadow(
-                        color: primary.withOpacity(0.3),
-                        blurRadius: 15,
-                        spreadRadius: 3,
+                        color: primary.withOpacity(0.4),
+                        blurRadius: 20,
+                        spreadRadius: 5,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
                   child: const Icon(
                     Icons.favorite,
-                    size: 50,
+                    size: 60,
                     color: textLight,
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
 
                 const Text(
                   'Blindly',
                   style: TextStyle(
-                    fontSize: 32,
+                    fontSize: 36,
                     fontWeight: FontWeight.bold,
                     color: textLight,
                     fontFamily: 'Bold',
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
 
                 // Branding tagline
                 const Text(
                   'Love comes unseen.',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     color: textGrey,
                     fontFamily: 'Regular',
                   ),
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: 30),
+                const SizedBox(height: 35),
 
                 if (!_showMechanics) ...[
                   // Get Started Button
                   Container(
                     width: double.infinity,
-                    height: 55,
+                    height: 60,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [primary, primary.withOpacity(0.8)],
                       ),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
-                          color: primary.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
+                          color: primary.withOpacity(0.4),
+                          blurRadius: 15,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
@@ -112,14 +113,14 @@ class _LandingScreenState extends State<LandingScreen> {
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(18),
                         ),
                       ),
                       child: const Text(
                         'Get Started',
                         style: TextStyle(
                           color: buttonText,
-                          fontSize: 18,
+                          fontSize: 20,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Medium',
                         ),
@@ -127,35 +128,11 @@ class _LandingScreenState extends State<LandingScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30),
 
                   // Additional info
                   const Text(
                     'Start your journey to find meaningful connections',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: textGrey,
-                      fontFamily: 'Regular',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ] else ...[
-                  // Header Section
-                  const Text(
-                    'How Blindly Works',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: textLight,
-                      fontFamily: 'Bold',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  const Text(
-                    'Discover meaningful connections through anonymous conversations',
                     style: TextStyle(
                       fontSize: 16,
                       color: textGrey,
@@ -164,10 +141,37 @@ class _LandingScreenState extends State<LandingScreen> {
                     textAlign: TextAlign.center,
                   ),
 
-                  const SizedBox(height: 30),
+                  const Spacer(flex: 2),
+                ] else ...[
+                  // Header Section
+                  const Text(
+                    'How Blindly Works',
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: textLight,
+                      fontFamily: 'Bold',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  const Text(
+                    'Discover meaningful connections through anonymous conversations',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: textGrey,
+                      fontFamily: 'Regular',
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  const SizedBox(height: 35),
 
                   // Mechanics Explanation
                   Expanded(
+                    flex: 5,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
@@ -206,22 +210,22 @@ class _LandingScreenState extends State<LandingScreen> {
                                 'Your privacy is protected. You control when and if you want to reveal your identity.',
                           ),
 
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 30),
 
                           // Continue Button
                           Container(
                             width: double.infinity,
-                            height: 55,
+                            height: 60,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [accent, accent.withOpacity(0.8)],
                               ),
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(18),
                               boxShadow: [
                                 BoxShadow(
-                                  color: accent.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
+                                  color: accent.withOpacity(0.4),
+                                  blurRadius: 15,
+                                  offset: const Offset(0, 8),
                                 ),
                               ],
                             ),
@@ -230,15 +234,15 @@ class _LandingScreenState extends State<LandingScreen> {
                               style: TextButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
+                                  borderRadius: BorderRadius.circular(18),
                                 ),
                               ),
                               child: _isLoading
                                   ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
+                                      width: 24,
+                                      height: 24,
                                       child: CircularProgressIndicator(
-                                        strokeWidth: 2,
+                                        strokeWidth: 3,
                                         valueColor:
                                             AlwaysStoppedAnimation<Color>(
                                           buttonText,
@@ -249,7 +253,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                       'Continue',
                                       style: TextStyle(
                                         color: buttonText,
-                                        fontSize: 18,
+                                        fontSize: 20,
                                         fontWeight: FontWeight.w600,
                                         fontFamily: 'Medium',
                                       ),
@@ -257,14 +261,14 @@ class _LandingScreenState extends State<LandingScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 30),
                         ],
                       ),
                     ),
                   ),
-                ],
 
-                const Spacer(),
+                  const Spacer(flex: 1),
+                ],
               ],
             ),
           ),
@@ -279,38 +283,53 @@ class _LandingScreenState extends State<LandingScreen> {
     required String description,
   }) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
         color: surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(25),
         border: Border.all(
-          color: primary.withOpacity(0.2),
+          color: primary.withOpacity(0.3),
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Icon Container
           Container(
-            width: 60,
-            height: 60,
+            width: 70,
+            height: 70,
             decoration: BoxDecoration(
-              color: primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(15),
+              gradient: LinearGradient(
+                colors: [primary, primary.withOpacity(0.7)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: primary.withOpacity(0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3),
+                ),
+              ],
             ),
             child: Icon(
               icon,
-              color: primary,
-              size: 30,
+              color: textLight,
+              size: 35,
             ),
           ),
           const SizedBox(width: 20),
+          // Text Content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -318,20 +337,20 @@ class _LandingScreenState extends State<LandingScreen> {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                     color: textLight,
-                    fontFamily: 'Medium',
+                    fontFamily: 'Bold',
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 10),
                 Text(
                   description,
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 16,
                     color: textGrey,
                     fontFamily: 'Regular',
-                    height: 1.4,
+                    height: 1.5,
                   ),
                 ),
               ],
