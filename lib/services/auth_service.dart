@@ -160,6 +160,30 @@ class AuthService {
     }
   }
 
+  // Save user image URLs to Firestore
+  Future<void> saveUserImages({
+    required String avatarUrl,
+    required List<String> imageUrls,
+  }) async {
+    try {
+      print('Saving user images to Firestore:');
+      print('Avatar URL: $avatarUrl');
+      print('Image URLs: $imageUrls');
+
+      if (currentUser != null) {
+        await _firestore.collection('users').doc(currentUser!.uid).update({
+          'avatarUrl': avatarUrl,
+          'imageUrls': imageUrls,
+          'imagesUploaded': true,
+          'imagesUploadedAt': FieldValue.serverTimestamp(),
+        });
+        print('User images saved successfully');
+      }
+    } catch (e) {
+      print('Error saving user images: $e');
+    }
+  }
+
   // Get user profile data
   Future<Map<String, dynamic>?> getUserProfile() async {
     try {
