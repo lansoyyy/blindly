@@ -63,209 +63,183 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(
             color: textLight,
             fontFamily: 'Bold',
-            fontSize: 20,
+            fontSize: 22,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: textLight),
+            onPressed: () {
+              // Navigate to settings
+            },
+          ),
+        ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Profile Header (Instagram Style)
-            Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Profile Info Row
-                  Row(
-                    children: [
-                      // Profile Picture
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: primary,
-                          boxShadow: [
-                            BoxShadow(
-                              color: primary.withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 40,
-                          color: textLight,
-                        ),
-                      ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // Profile Header
+                    _buildProfileHeader(),
 
-                      const SizedBox(width: 20),
+                    // Bio Section
+                    _buildBioSection(),
 
-                      // Profile Stats
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildStatColumn('${_userImages.length}', 'Photos'),
-                            _buildStatColumn('1', 'Active Chat'),
-                            _buildStatColumn('0', 'Days'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    // Action Buttons
+                    _buildActionButtons(),
 
-                  const SizedBox(height: 20),
-
-                  // Name and Age
-                  Text(
-                    '$_userName, $_userAge',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: textLight,
-                      fontFamily: 'Bold',
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // Bio
-                  Text(
-                    _userBio,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: textLight,
-                      fontFamily: 'Regular',
-                      height: 1.4,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Action Buttons
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                            color: surface,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: primary.withOpacity(0.3),
-                              width: 1,
-                            ),
-                          ),
-                          child: TextButton(
-                            onPressed: _addPhoto,
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              'Add Photo',
-                              style: TextStyle(
-                                color: primary,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Medium',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [primary, primary.withOpacity(0.8)],
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/find-match');
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              'Find Match',
-                              style: TextStyle(
-                                color: buttonText,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: 'Medium',
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // Divider
-            Container(
-              height: 1,
-              color: surface,
-            ),
-
-            // Photos Grid (Instagram Style)
-            Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.all(1),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 1,
-                  mainAxisSpacing: 1,
+                    // Photos Section
+                    _buildPhotosSection(),
+                  ],
                 ),
-                itemCount:
-                    _userImages.length + (_userImages.length < 6 ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == _userImages.length) {
-                    // Add photo button
-                    return _buildAddPhotoTile();
-                  } else {
-                    // Photo tile
-                    return _buildPhotoTile(index);
-                  }
-                },
               ),
-            ),
-          ],
-        ),
       ),
     );
   }
 
-  Widget _buildStatColumn(String count, String label) {
+  Widget _buildProfileHeader() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: surface,
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Profile Picture with Online Indicator
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Profile Picture
+              Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    colors: [primary, primary.withOpacity(0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: primary.withOpacity(0.4),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.person,
+                  size: 60,
+                  color: textLight,
+                ),
+              ),
+              // Online Indicator
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  width: 25,
+                  height: 25,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: accent,
+                    border: Border.all(color: background, width: 3),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 20),
+
+          // Name and Age
+          Text(
+            '$_userName, $_userAge',
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: textLight,
+              fontFamily: 'Bold',
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          // Stats Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildStatItem(
+                icon: Icons.photo_library,
+                count: '${_userImages.length}',
+                label: 'Photos',
+                color: primary,
+              ),
+              _buildStatItem(
+                icon: Icons.chat_bubble,
+                count: '1',
+                label: 'Chats',
+                color: accent,
+              ),
+              _buildStatItem(
+                icon: Icons.favorite,
+                count: '0',
+                label: 'Likes',
+                color: Colors.pinkAccent,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatItem({
+    required IconData icon,
+    required String count,
+    required String label,
+    required Color color,
+  }) {
     return Column(
       children: [
+        Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: color.withOpacity(0.1),
+          ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24,
+          ),
+        ),
+        const SizedBox(height: 8),
         Text(
           count,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.bold,
             color: textLight,
             fontFamily: 'Bold',
           ),
         ),
-        const SizedBox(height: 2),
         Text(
           label,
           style: const TextStyle(
@@ -278,76 +252,268 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildPhotoTile(int index) {
+  Widget _buildBioSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'About Me',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: textLight,
+              fontFamily: 'Bold',
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              color: surface,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: primary.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              _userBio,
+              style: const TextStyle(
+                fontSize: 14,
+                color: textLight,
+                fontFamily: 'Regular',
+                height: 1.5,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          // Edit Profile Button
+          Expanded(
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                color: surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: primary.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: TextButton(
+                onPressed: () {
+                  // Navigate to edit profile
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Edit Profile',
+                  style: TextStyle(
+                    color: primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Medium',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 15),
+          // Find Match Button
+          Expanded(
+            child: Container(
+              height: 50,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [primary, primary.withOpacity(0.8)],
+                ),
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: primary.withOpacity(0.3),
+                    blurRadius: 10,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/find-match');
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  'Find Match',
+                  style: TextStyle(
+                    color: buttonText,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Medium',
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhotosSection() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'My Photos',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: textLight,
+              fontFamily: 'Bold',
+            ),
+          ),
+          const SizedBox(height: 15),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 1,
+            ),
+            itemCount: _userImages.length + 1,
+            itemBuilder: (context, index) {
+              if (index == _userImages.length) {
+                // Add photo button
+                return _buildAddPhotoCard();
+              } else {
+                // Photo card
+                return _buildPhotoCard(index);
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhotoCard(int index) {
     return GestureDetector(
       onTap: () => _showPhotoOptions(index),
       child: Container(
-        color: surface,
-        child: Stack(
-          children: [
-            // Photo placeholder
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              color: surface,
-              child: Center(
-                child: Icon(
-                  Icons.person,
-                  size: 30,
-                  color: primary.withOpacity(0.6),
-                ),
-              ),
-            ),
-
-            // Remove button
-            Positioned(
-              top: 5,
-              right: 5,
-              child: GestureDetector(
-                onTap: () => _removePhoto(index),
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(
-                    Icons.close,
-                    color: textLight,
-                    size: 12,
-                  ),
-                ),
-              ),
+        decoration: BoxDecoration(
+          color: surface,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
           ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Stack(
+            children: [
+              // Photo placeholder
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: surface,
+                child: Center(
+                  child: Icon(
+                    Icons.person,
+                    size: 30,
+                    color: primary.withOpacity(0.6),
+                  ),
+                ),
+              ),
+
+              // Remove button
+              Positioned(
+                top: 8,
+                right: 8,
+                child: GestureDetector(
+                  onTap: () => _removePhoto(index),
+                  child: Container(
+                    width: 25,
+                    height: 25,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.6),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      color: textLight,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildAddPhotoTile() {
+  Widget _buildAddPhotoCard() {
     return GestureDetector(
       onTap: _addPhoto,
       child: Container(
-        color: surface,
+        decoration: BoxDecoration(
+          color: surface,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(
+            color: primary.withOpacity(0.3),
+            width: 2,
+          ),
+        ),
         child: Center(
-          child: Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: primary.withOpacity(0.3),
-                width: 1,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.add_a_photo,
+                color: primary,
+                size: 30,
               ),
-            ),
-            child: Icon(
-              Icons.add,
-              color: primary,
-              size: 20,
-            ),
+              const SizedBox(height: 5),
+              Text(
+                'Add Photo',
+                style: TextStyle(
+                  color: primary,
+                  fontSize: 12,
+                  fontFamily: 'Medium',
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -359,24 +525,91 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       backgroundColor: surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(25),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            // Handle bar
             Container(
-              width: 40,
-              height: 4,
+              width: 50,
+              height: 5,
               decoration: BoxDecoration(
                 color: textGrey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+            const SizedBox(height: 25),
+
+            // Title
+            const Text(
+              'Photo Options',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: textLight,
+                fontFamily: 'Bold',
               ),
             ),
             const SizedBox(height: 20),
+
+            // Options
             ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.visibility, color: primary),
+              ),
+              title: const Text(
+                'View Photo',
+                style: TextStyle(
+                  color: textLight,
+                  fontFamily: 'Medium',
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                // Show photo in full screen
+              },
+            ),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.orange.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.edit, color: Colors.orange),
+              ),
+              title: const Text(
+                'Edit Photo',
+                style: TextStyle(
+                  color: textLight,
+                  fontFamily: 'Medium',
+                ),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                // Navigate to edit photo
+              },
+            ),
+            ListTile(
+              leading: Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.red.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(Icons.delete, color: Colors.red),
+              ),
               title: const Text(
                 'Remove Photo',
                 style: TextStyle(
@@ -389,19 +622,31 @@ class _HomeScreenState extends State<HomeScreen> {
                 _removePhoto(index);
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.edit, color: primary),
-              title: const Text(
-                'Edit Photo',
-                style: TextStyle(
-                  color: textLight,
-                  fontFamily: 'Medium',
+            const SizedBox(height: 10),
+
+            // Cancel button
+            Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                color: surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: textGrey.withOpacity(0.3),
+                  width: 1,
                 ),
               ),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to edit photo
-              },
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: textGrey,
+                    fontSize: 16,
+                    fontFamily: 'Medium',
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -420,6 +665,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const SnackBar(
           content: Text('Photo added successfully'),
           backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
         ),
       );
     } else {
@@ -427,6 +673,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const SnackBar(
           content: Text('Maximum 6 photos allowed'),
           backgroundColor: Colors.orange,
+          duration: Duration(seconds: 2),
         ),
       );
     }
@@ -441,7 +688,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Photo removed'),
-          backgroundColor: Colors.orange,
+          backgroundColor: primary,
+          duration: Duration(seconds: 2),
         ),
       );
     } else {
@@ -449,6 +697,7 @@ class _HomeScreenState extends State<HomeScreen> {
         const SnackBar(
           content: Text('You need at least 1 photo'),
           backgroundColor: Colors.red,
+          duration: Duration(seconds: 2),
         ),
       );
     }
