@@ -155,7 +155,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
                         // Bio Field
                         const Text(
-                          'Bio (Optional)',
+                          'Bio',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -375,6 +375,12 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
       child: TextFormField(
         controller: _bioController,
         maxLines: 4,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter a bio';
+          }
+          return null;
+        },
         style: const TextStyle(
           color: textLight,
           fontFamily: 'Regular',
@@ -409,7 +415,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
 
         // Navigate to image upload screen
         if (mounted) {
-          Navigator.pushReplacementNamed(context, '/upload-images');
+          Navigator.pushNamed(context, '/upload-images');
         }
       } catch (e) {
         print('Error saving profile: $e');

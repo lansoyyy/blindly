@@ -125,17 +125,15 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildProfileHeader() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
         color: surface,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 15,
             offset: const Offset(0, 5),
           ),
         ],
@@ -150,35 +148,38 @@ class _HomeScreenState extends State<HomeScreen> {
               GestureDetector(
                 onTap: _updateAvatar,
                 child: Container(
-                  width: 120,
-                  height: 120,
+                  width: 130,
+                  height: 130,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
-                      colors: [primary, primary.withOpacity(0.7)],
+                      colors: [
+                        primary,
+                        accent
+                      ], // Using accent color for Instagram-like gradient
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
                       BoxShadow(
                         color: primary.withOpacity(0.4),
-                        blurRadius: 15,
-                        offset: const Offset(0, 5),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
                   child: _userAvatar != null
                       ? ClipRRect(
-                          borderRadius: BorderRadius.circular(60),
+                          borderRadius: BorderRadius.circular(65),
                           child: Image.network(
                             _userAvatar!,
-                            width: 120,
-                            height: 120,
+                            width: 130,
+                            height: 130,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
                                 Icons.person,
-                                size: 60,
+                                size: 65,
                                 color: textLight,
                               );
                             },
@@ -186,28 +187,56 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       : const Icon(
                           Icons.person,
-                          size: 60,
+                          size: 65,
                           color: textLight,
                         ),
+                ),
+              ),
+              // Online indicator
+              Positioned(
+                bottom: 5,
+                right: 5,
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: surface,
+                      width: 3,
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 25),
 
           // Name and Age
           Text(
-            '$_userName, $_userAge',
+            '$_userName',
             style: const TextStyle(
-              fontSize: 24,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
               color: textLight,
               fontFamily: 'Bold',
             ),
+            textAlign: TextAlign.center,
           ),
 
-          // Removed stats row showing photos count
+          const SizedBox(height: 5),
+
+          Text(
+            '$_userAge years old',
+            style: const TextStyle(
+              fontSize: 16,
+              color: textGrey,
+              fontFamily: 'Regular',
+            ),
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
@@ -216,7 +245,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBioSection() {
     return Container(
       width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: surface,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -224,35 +265,51 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                'About Me',
+                'Bio',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: textLight,
                   fontFamily: 'Bold',
                 ),
               ),
+              // Edit button
+              GestureDetector(
+                onTap: _editBio,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: primary.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.edit,
+                    size: 18,
+                    color: primary,
+                  ),
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: surface,
+              color: background,
               borderRadius: BorderRadius.circular(15),
               border: Border.all(
-                color: primary.withOpacity(0.2),
+                color: primary.withOpacity(0.3),
                 width: 1,
               ),
             ),
             child: Text(
               _userBio,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 15,
                 color: textLight,
                 fontFamily: 'Regular',
-                height: 1.5,
+                height: 1.6,
               ),
             ),
           ),
@@ -399,36 +456,52 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
         children: [
-          // Edit Profile Button
+          // Add Photo Button
           Expanded(
             child: Container(
-              height: 50,
+              height: 55,
               decoration: BoxDecoration(
                 color: surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: primary.withOpacity(0.3),
-                  width: 1,
-                ),
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
               child: TextButton(
-                onPressed: _editBio,
+                onPressed: _addPhoto,
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(15),
                   ),
+                  padding: EdgeInsets.zero,
                 ),
-                child: const Text(
-                  'Edit Bio',
-                  style: TextStyle(
-                    color: primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Medium',
-                  ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_a_photo,
+                      color: primary,
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'Add Photo',
+                      style: TextStyle(
+                        color: primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Medium',
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -437,16 +510,16 @@ class _HomeScreenState extends State<HomeScreen> {
           // Find Match Button
           Expanded(
             child: Container(
-              height: 50,
+              height: 55,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [primary, primary.withOpacity(0.8)],
                 ),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: primary.withOpacity(0.3),
-                    blurRadius: 10,
+                    color: primary.withOpacity(0.4),
+                    blurRadius: 15,
                     offset: const Offset(0, 5),
                   ),
                 ],
@@ -458,17 +531,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(15),
                   ),
+                  padding: EdgeInsets.zero,
                 ),
-                child: const Text(
-                  'Find Match',
-                  style: TextStyle(
-                    color: buttonText,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Medium',
-                  ),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.search,
+                      color: buttonText,
+                      size: 20,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'Find Match',
+                      style: TextStyle(
+                        color: buttonText,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Medium',
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -481,87 +566,106 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildPhotosSection() {
     return Container(
       width: double.infinity,
+      margin: const EdgeInsets.all(20),
       padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: surface,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.15),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'My Photos',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: textLight,
-                  fontFamily: 'Bold',
-                ),
-              ),
-              // Photos count badge
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: primary.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Text(
-                  '${_userImages.length} Photos',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: primary,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Medium',
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 15),
-          // Fixed GridView implementation
-          SizedBox(
-            height: 200, // Set a fixed height for the GridView
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-                childAspectRatio: 1,
-              ),
-              itemCount: _userImages.length + 1,
-              itemBuilder: (context, index) {
-                if (index == _userImages.length) {
-                  // Add photo button
-                  return _buildAddPhotoCard();
-                } else {
-                  // Photo card
-                  return _buildPhotoCard(index);
-                }
-              },
+          const Text(
+            'My Photos',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: textLight,
+              fontFamily: 'Bold',
             ),
           ),
+          const SizedBox(height: 20),
+          // Instagram-like grid layout
+          _buildInstagramGrid(),
         ],
       ),
     );
   }
 
-  Widget _buildPhotoCard(int index) {
-    return GestureDetector(
-      onTap: () => _showPhotoOptions(index),
-      child: Container(
-        decoration: BoxDecoration(
-          color: surface,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 5,
-              offset: const Offset(0, 2),
+  // Instagram-like photo grid
+  Widget _buildInstagramGrid() {
+    if (_userImages.isEmpty) {
+      return Container(
+        height: 200,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.photo_library,
+              size: 50,
+              color: textGrey,
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              'No photos yet',
+              style: TextStyle(
+                fontSize: 16,
+                color: textGrey,
+                fontFamily: 'Regular',
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Add photos to your profile',
+              style: TextStyle(
+                fontSize: 14,
+                color: textGrey,
+                fontFamily: 'Regular',
+              ),
             ),
           ],
         ),
+      );
+    }
+
+    // Create a grid that looks more like Instagram
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 2,
+        mainAxisSpacing: 2,
+        childAspectRatio: 1,
+      ),
+      itemCount: _userImages.length > 9
+          ? 9
+          : _userImages.length, // Show max 9 images like Instagram
+      itemBuilder: (context, index) {
+        return _buildInstagramPhotoCard(index);
+      },
+    );
+  }
+
+  // Instagram-style photo card
+  Widget _buildInstagramPhotoCard(int index) {
+    return GestureDetector(
+      onTap: () => _showPhotoOptions(index),
+      onLongPress: () =>
+          _showPhotoOptions(index), // Add long press for more options
+      child: Container(
+        decoration: BoxDecoration(
+          color: surface,
+        ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
           child: _userImages.isNotEmpty && index < _userImages.length
               ? Image.network(
                   _userImages[index],
@@ -634,6 +738,20 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               ListTile(
+                leading: const Icon(Icons.visibility, color: primary),
+                title: const Text(
+                  'View Photo',
+                  style: TextStyle(
+                    color: textLight,
+                    fontFamily: 'Regular',
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  _viewPhoto(index);
+                },
+              ),
+              ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
                 title: const Text(
                   'Delete Photo',
@@ -666,6 +784,76 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  // View photo in full screen
+  void _viewPhoto(int index) {
+    if (_userImages.isNotEmpty && index < _userImages.length) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            child: Container(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.8,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Stack(
+                  children: [
+                    Image.network(
+                      _userImages[index],
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          color: surface,
+                          child: Center(
+                            child: Icon(
+                              Icons.person,
+                              size: 100,
+                              color: primary.withOpacity(0.6),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    // Close button
+                    Positioned(
+                      top: 15,
+                      right: 15,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: const BoxDecoration(
+                            color: Colors.black54,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   void _removePhoto(int index) async {
@@ -933,17 +1121,38 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: _addPhoto,
       child: Container(
         decoration: BoxDecoration(
-          color: surface,
+          color: background,
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-            color: primary.withOpacity(0.3),
+            color: primary.withOpacity(0.5),
             width: 2,
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
-        child: const Icon(
-          Icons.add,
-          size: 40,
-          color: primary,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.add_a_photo,
+              size: 35,
+              color: primary,
+            ),
+            const SizedBox(height: 5),
+            Text(
+              'Add Photo',
+              style: TextStyle(
+                fontSize: 12,
+                color: primary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

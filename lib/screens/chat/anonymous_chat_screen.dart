@@ -797,35 +797,6 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: 20),
-            ListTile(
-              leading: const Icon(Icons.block, color: Colors.red),
-              title: const Text(
-                'Block User',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontFamily: 'Medium',
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                // Handle block user
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.report, color: Colors.orange),
-              title: const Text(
-                'Report User',
-                style: TextStyle(
-                  color: Colors.orange,
-                  fontFamily: 'Medium',
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                // Handle report user
-              },
-            ),
             ListTile(
               leading: const Icon(Icons.close, color: textLight),
               title: const Text(

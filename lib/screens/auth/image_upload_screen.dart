@@ -163,41 +163,38 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                       ),
                     ),
                     child: _selectedAvatar != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(60),
-                            child: Stack(
-                              children: [
-                                Image.file(
+                        ? Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(60),
+                                child: Image.file(
                                   _selectedAvatar!,
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
                                 ),
-
-                                // Remove button
-                                Positioned(
-                                  top: 5,
-                                  right: 5,
-                                  child: GestureDetector(
-                                    onTap: () => _removeAvatar(),
-                                    child: Container(
-                                      width: 25,
-                                      height: 25,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.7),
-                                        borderRadius:
-                                            BorderRadius.circular(12.5),
-                                      ),
-                                      child: const Icon(
-                                        Icons.close,
-                                        color: textLight,
-                                        size: 14,
-                                      ),
+                              ),
+                              Positioned(
+                                top: 5,
+                                right: 5,
+                                child: GestureDetector(
+                                  onTap: () => _removeAvatar(),
+                                  child: Container(
+                                    width: 25,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.7),
+                                      borderRadius: BorderRadius.circular(12.5),
+                                    ),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: textLight,
+                                      size: 14,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           )
                         : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
