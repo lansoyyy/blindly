@@ -1,6 +1,7 @@
 import 'package:finger_on_the_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'widgets/auth_state_wrapper.dart';
 import 'screens/auth/splash_screen.dart';
 import 'screens/auth/landing_screen.dart';
@@ -20,6 +21,9 @@ void main() async {
     name: 'blindly-bd0d3',
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Initialize GetStorage for persistent session management
+  await GetStorage.init();
 
   runApp(const BlindlyApp());
 }

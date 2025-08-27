@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:finger_on_the_app/services/session_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final SessionService _sessionService = SessionService();
 
   // Get current user
   User? get currentUser => _auth.currentUser;
@@ -14,6 +16,30 @@ class AuthService {
   // Check if user is authenticated
   bool get isAuthenticated => _auth.currentUser != null;
 
+  // Check if user has valid persistent session
+  Future<bool> hasValidSession() async {
+    // Check if we have a saved login state
+    if (!_sessionService.isLoggedIn()) {
+      return false;
+    }
+
+    // Check if user still exists in Firebase
+    String? userId = _sessionService.getUserId();
+    if (userId == null) {
+      return false;
+    }
+
+    try {
+      // Try to get the user document from Firestore
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(userId).get();
+      return userDoc.exists;
+    } catch (e) {
+      print('Error checking user document: $e');
+      return false;
+    }
+  }
+
   // Anonymous sign in
   Future<UserCredential?> signInAnonymously() async {
     try {
@@ -23,6 +49,10 @@ class AuthService {
       if (user != null) {
         // Create user document in Firestore if it doesn't exist
         await _createUserDocument(user);
+
+        // Save login state to persistent storage
+        await _sessionService.saveLoginState(user.uid);
+
         return result;
       }
       return null;
@@ -36,6 +66,9 @@ class AuthService {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
+
+      // Clear login state from persistent storage
+      await _sessionService.clearLoginState();
     } catch (e) {
       print('Error signing out: $e');
     }
@@ -213,6 +246,9 @@ class AuthService {
 
         // Delete user from Auth
         await currentUser!.delete();
+
+        // Clear login state from persistent storage
+        await _sessionService.clearLoginState();
       }
     } catch (e) {
       print('Error deleting account: $e');
