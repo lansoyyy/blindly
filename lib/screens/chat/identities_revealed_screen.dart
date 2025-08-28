@@ -24,14 +24,12 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
     with TickerProviderStateMixin {
   late AnimationController _mainAnimationController;
   late AnimationController _heartController;
-  late AnimationController _sparkleController;
   late AnimationController _avatarController;
 
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<double> _slideAnimation;
   late Animation<double> _heartAnimation;
-  late Animation<double> _sparkleAnimation;
   late Animation<double> _avatarAnimation;
 
   @override
@@ -40,25 +38,19 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
 
     // Main animation controller
     _mainAnimationController = AnimationController(
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 1500),
       vsync: this,
     );
 
     // Heart animation controller
     _heartController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    );
-
-    // Sparkle animation controller
-    _sparkleController = AnimationController(
-      duration: const Duration(milliseconds: 3000),
+      duration: const Duration(milliseconds: 1000),
       vsync: this,
     );
 
     // Avatar animation controller
     _avatarController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 1200),
       vsync: this,
     );
 
@@ -72,7 +64,7 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
     ));
 
     _scaleAnimation = Tween<double>(
-      begin: 0.3,
+      begin: 0.5,
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _mainAnimationController,
@@ -80,7 +72,7 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
     ));
 
     _slideAnimation = Tween<double>(
-      begin: 50.0,
+      begin: 30.0,
       end: 0.0,
     ).animate(CurvedAnimation(
       parent: _mainAnimationController,
@@ -88,18 +80,10 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
     ));
 
     _heartAnimation = Tween<double>(
-      begin: 0.8,
-      end: 1.2,
+      begin: 0.9,
+      end: 1.1,
     ).animate(CurvedAnimation(
       parent: _heartController,
-      curve: Curves.easeInOut,
-    ));
-
-    _sparkleAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _sparkleController,
       curve: Curves.easeInOut,
     ));
 
@@ -108,7 +92,7 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _avatarController,
-      curve: Curves.bounceOut,
+      curve: Curves.easeOut,
     ));
 
     // Start animations
@@ -120,15 +104,11 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
     _mainAnimationController.forward();
 
     // Start heart beating animation with delay
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 600));
     _heartController.repeat(reverse: true);
 
-    // Start sparkle animation
-    await Future.delayed(const Duration(milliseconds: 400));
-    _sparkleController.repeat();
-
     // Start avatar animation
-    await Future.delayed(const Duration(milliseconds: 200));
+    await Future.delayed(const Duration(milliseconds: 300));
     _avatarController.forward();
   }
 
@@ -136,7 +116,6 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
   void dispose() {
     _mainAnimationController.dispose();
     _heartController.dispose();
-    _sparkleController.dispose();
     _avatarController.dispose();
     super.dispose();
   }
@@ -147,12 +126,11 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
             colors: [
-              primary.withOpacity(0.9),
-              accent.withOpacity(0.8),
-              primary.withOpacity(0.7),
+              background,
+              surface,
             ],
           ),
         ),
@@ -167,97 +145,65 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
                   child: ScaleTransition(
                     scale: _scaleAnimation,
                     child: Padding(
-                      padding: const EdgeInsets.all(24.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Spacer(),
-
-                          // Sparkle Effects
-                          _buildSparkleEffects(),
-
-                          const SizedBox(height: 20),
-
-                          // Celebration Icon
-                          AnimatedBuilder(
-                            animation: _sparkleController,
-                            builder: (context, child) {
-                              return Transform.rotate(
-                                angle: _sparkleAnimation.value * 0.1,
-                                child: Icon(
-                                  Icons.celebration,
-                                  color: Colors.amber,
-                                  size: 64 + (_sparkleAnimation.value * 8),
-                                ),
-                              );
-                            },
-                          ),
-
-                          const SizedBox(height: 32),
-
                           // Main Title
                           const Text(
                             'Identities Revealed!',
                             style: TextStyle(
                               color: textLight,
-                              fontSize: 32,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Bold',
-                              letterSpacing: 1.5,
                             ),
                             textAlign: TextAlign.center,
                           ),
 
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 12),
 
                           // Subtitle
                           const Text(
-                            'You can now see each other\'s real profiles!',
+                            'You can now see each other\'s real profiles',
                             style: TextStyle(
-                              color: textLight,
-                              fontSize: 18,
+                              color: textGrey,
+                              fontSize: 16,
                               fontFamily: 'Regular',
-                              fontWeight: FontWeight.w300,
                             ),
                             textAlign: TextAlign.center,
                           ),
 
-                          const SizedBox(height: 48),
+                          const SizedBox(height: 40),
 
                           // Avatars and Heart Section
                           _buildAvatarsSection(),
 
-                          const SizedBox(height: 48),
+                          const SizedBox(height: 30),
 
                           // Connection Message
                           Container(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 16),
+                                horizontal: 20, vertical: 12),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: Colors.white.withOpacity(0.2),
-                                width: 1,
-                              ),
+                              color: primary.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(16),
                             ),
                             child: const Text(
-                              '💫 A new connection has been made! 💫',
+                              'A new connection has been made!',
                               style: TextStyle(
-                                color: textLight,
-                                fontSize: 16,
+                                color: primary,
+                                fontSize: 15,
                                 fontFamily: 'Medium',
-                                fontWeight: FontWeight.w500,
                               ),
                               textAlign: TextAlign.center,
                             ),
                           ),
 
-                          const Spacer(),
+                          const SizedBox(height: 40),
 
                           // Continue Button
                           _buildContinueButton(),
-
-                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
@@ -268,44 +214,6 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildSparkleEffects() {
-    return AnimatedBuilder(
-      animation: _sparkleController,
-      builder: (context, child) {
-        return SizedBox(
-          height: 100,
-          child: Stack(
-            children: [
-              // Floating sparkles
-              ...List.generate(6, (index) {
-                final offset = Offset(
-                  (index * 60.0) +
-                      (_sparkleAnimation.value *
-                          20 *
-                          (index % 2 == 0 ? 1 : -1)),
-                  20 + (_sparkleAnimation.value * 30 * (index % 3)),
-                );
-                return Positioned(
-                  left: offset.dx,
-                  top: offset.dy,
-                  child: Transform.scale(
-                    scale: 0.5 + (_sparkleAnimation.value * 0.5),
-                    child: Icon(
-                      Icons.auto_awesome,
-                      color: Colors.white
-                          .withOpacity(0.3 + (_sparkleAnimation.value * 0.4)),
-                      size: 16 + (index % 3) * 4,
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
-        );
-      },
     );
   }
 
@@ -322,7 +230,6 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
               child: _buildUserAvatar(
                 name: widget.userAName,
                 age: widget.userAAge,
-                color: primary,
                 isLeft: true,
               ),
             ),
@@ -333,17 +240,10 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
               builder: (context, child) {
                 return Transform.scale(
                   scale: _heartAnimation.value,
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Colors.pink.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.favorite,
-                      color: Colors.pinkAccent,
-                      size: 48,
-                    ),
+                  child: const Icon(
+                    Icons.favorite,
+                    color: primary,
+                    size: 32,
                   ),
                 );
               },
@@ -355,7 +255,6 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
               child: _buildUserAvatar(
                 name: widget.userBName,
                 age: widget.userBAge,
-                color: accent,
                 isLeft: false,
               ),
             ),
@@ -368,74 +267,50 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
   Widget _buildUserAvatar({
     required String name,
     required String age,
-    required Color color,
     required bool isLeft,
   }) {
     return Column(
       children: [
-        // Avatar with glow effect
+        // Avatar with subtle glow
         Container(
-          width: 100,
-          height: 100,
+          width: 120,
+          height: 120,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [color, color.withOpacity(0.7)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            color: surface,
+            border: Border.all(
+              color: primary.withOpacity(0.3),
+              width: 2,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: color.withOpacity(0.6),
-                blurRadius: 20,
-                spreadRadius: 4,
-              ),
-              BoxShadow(
-                color: color.withOpacity(0.3),
-                blurRadius: 40,
-                spreadRadius: 8,
-              ),
-            ],
           ),
           child: const Icon(
             Icons.person,
-            color: textLight,
-            size: 50,
+            color: primary,
+            size: 58,
           ),
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
 
-        // Name with background
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1,
-            ),
+        // Name
+        Text(
+          name,
+          style: const TextStyle(
+            color: textLight,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Bold',
           ),
-          child: Text(
-            name,
-            style: const TextStyle(
-              color: textLight,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Bold',
-            ),
-            textAlign: TextAlign.center,
-          ),
+          textAlign: TextAlign.center,
         ),
 
         const SizedBox(height: 4),
 
         // Age
         Text(
-          age,
+          '$age years old',
           style: TextStyle(
-            color: textLight.withOpacity(0.8),
+            color: textGrey,
             fontSize: 14,
             fontFamily: 'Regular',
           ),
@@ -447,20 +322,15 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
   Widget _buildContinueButton() {
     return Container(
       width: double.infinity,
-      height: 56,
+      height: 52,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.white.withOpacity(0.9),
-            Colors.white.withOpacity(0.8),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(28),
+        color: primary,
+        borderRadius: BorderRadius.circular(26),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 15,
-            offset: const Offset(0, 6),
+            color: primary.withOpacity(0.3),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -471,28 +341,17 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
         style: TextButton.styleFrom(
           backgroundColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(26),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.chat,
-              color: primary,
-              size: 24,
-            ),
-            const SizedBox(width: 12),
-            Text(
-              'Continue Chat',
-              style: TextStyle(
-                color: primary,
-                fontFamily: 'Bold',
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        child: const Text(
+          'Continue Chat',
+          style: TextStyle(
+            color: buttonText,
+            fontFamily: 'Bold',
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
