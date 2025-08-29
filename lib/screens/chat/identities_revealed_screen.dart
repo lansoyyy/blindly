@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/colors.dart';
 
 class IdentitiesRevealedScreen extends StatefulWidget {
@@ -241,7 +242,7 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
                 return Transform.scale(
                   scale: _heartAnimation.value,
                   child: const Icon(
-                    Icons.favorite,
+                    FontAwesomeIcons.heart,
                     color: primary,
                     size: 32,
                   ),
@@ -284,7 +285,7 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
             ),
           ),
           child: const Icon(
-            Icons.person,
+            FontAwesomeIcons.user,
             color: primary,
             size: 58,
           ),
@@ -344,14 +345,25 @@ class _IdentitiesRevealedScreenState extends State<IdentitiesRevealedScreen>
             borderRadius: BorderRadius.circular(26),
           ),
         ),
-        child: const Text(
-          'Continue Chat',
-          style: TextStyle(
-            color: buttonText,
-            fontFamily: 'Bold',
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              FontAwesomeIcons.message,
+              color: buttonText,
+              size: 18,
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              'Continue Chat',
+              style: TextStyle(
+                color: buttonText,
+                fontFamily: 'Bold',
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );

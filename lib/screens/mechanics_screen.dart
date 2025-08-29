@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/colors.dart';
 
 class MechanicsScreen extends StatelessWidget {
@@ -12,7 +13,7 @@ class MechanicsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textLight),
+          icon: const Icon(FontAwesomeIcons.arrowLeft, color: textLight),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -58,7 +59,7 @@ class MechanicsScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       _buildRuleCard(
-                        icon: Icons.person,
+                        icon: FontAwesomeIcons.user,
                         title: 'Anonymous Identities',
                         description:
                             'You\'ll be known as "User A" and your match as "User B" until you choose to reveal your real identity.',
@@ -68,7 +69,7 @@ class MechanicsScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       _buildRuleCard(
-                        icon: Icons.visibility,
+                        icon: FontAwesomeIcons.eye,
                         title: 'Reveal Your Identity',
                         description:
                             'Send a reveal request anytime during the conversation. Both users must accept to see real profiles and continue chatting.',
@@ -78,7 +79,7 @@ class MechanicsScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       _buildRuleCard(
-                        icon: Icons.handshake,
+                        icon: FontAwesomeIcons.handshake,
                         title: 'Mutual Agreement',
                         description:
                             'Both users must accept the reveal request to see real profiles. If declined, you can try again later.',
@@ -88,7 +89,7 @@ class MechanicsScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       _buildRuleCard(
-                        icon: Icons.security,
+                        icon: FontAwesomeIcons.shield,
                         title: 'Privacy First',
                         description:
                             'Your personal information stays hidden until you choose to reveal. You control your privacy completely.',
@@ -98,7 +99,7 @@ class MechanicsScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       _buildRuleCard(
-                        icon: Icons.chat_bubble,
+                        icon: FontAwesomeIcons.message,
                         title: 'Meaningful Conversations',
                         description:
                             'Focus on personality and connection rather than appearance. Build genuine relationships through conversation.',
@@ -108,7 +109,7 @@ class MechanicsScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       _buildRuleCard(
-                        icon: Icons.block,
+                        icon: FontAwesomeIcons.ban,
                         title: 'Respect & Safety',
                         description:
                             'Be respectful and kind. Report inappropriate behavior. Your safety and comfort are our priority.',
@@ -131,7 +132,7 @@ class MechanicsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Icon(
-                              Icons.info_outline,
+                              FontAwesomeIcons.circleInfo,
                               color: accent,
                               size: 30,
                             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -80,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen>
                         ],
                       ),
                       child: const Icon(
-                        Icons.favorite,
+                        FontAwesomeIcons.heart,
                         size: 60,
                         color: textLight,
                       ),

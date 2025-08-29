@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/colors.dart';
 import '../../services/auth_service.dart';
 
@@ -53,7 +54,7 @@ class _LandingScreenState extends State<LandingScreen> {
                     ],
                   ),
                   child: const Icon(
-                    Icons.favorite,
+                    FontAwesomeIcons.heart,
                     size: 60,
                     color: textLight,
                   ),
@@ -177,7 +178,7 @@ class _LandingScreenState extends State<LandingScreen> {
                         children: [
                           // Mechanics Cards
                           _buildMechanicsCard(
-                            icon: Icons.person,
+                            icon: FontAwesomeIcons.user,
                             title: 'Anonymous Chat',
                             description:
                                 'Start conversations without revealing your identity. You\'ll be known as "User A" or "User B" until you choose to reveal.',
@@ -186,7 +187,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           const SizedBox(height: 25),
 
                           _buildMechanicsCard(
-                            icon: Icons.visibility,
+                            icon: FontAwesomeIcons.eye,
                             title: 'Reveal Your Identity',
                             description:
                                 'Send a reveal request anytime during the conversation. Both users must accept to see real profiles.',
@@ -195,7 +196,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           const SizedBox(height: 25),
 
                           _buildMechanicsCard(
-                            icon: Icons.favorite,
+                            icon: FontAwesomeIcons.heart,
                             title: 'Meaningful Connections',
                             description:
                                 'Focus on personality and conversation rather than appearances. Build genuine connections.',
@@ -204,7 +205,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           const SizedBox(height: 25),
 
                           _buildMechanicsCard(
-                            icon: Icons.security,
+                            icon: FontAwesomeIcons.shield,
                             title: 'Safe & Secure',
                             description:
                                 'Your privacy is protected. You control when and if you want to reveal your identity.',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
 import '../utils/colors.dart';
 import '../services/auth_service.dart';
@@ -81,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: textLight),
+            icon:
+                const Icon(FontAwesomeIcons.rightFromBracket, color: textLight),
             onPressed: _handleLogout,
           ),
         ],
@@ -178,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
-                                Icons.person,
+                                FontAwesomeIcons.user,
                                 size: 65,
                                 color: textLight,
                               );
@@ -186,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         )
                       : const Icon(
-                          Icons.person,
+                          FontAwesomeIcons.user,
                           size: 65,
                           color: textLight,
                         ),
@@ -283,7 +285,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
-                    Icons.edit,
+                    FontAwesomeIcons.penToSquare,
                     size: 18,
                     color: primary,
                   ),
@@ -486,8 +488,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.add_a_photo,
+                    const Icon(
+                      FontAwesomeIcons.camera,
                       color: primary,
                       size: 20,
                     ),
@@ -538,8 +540,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
-                      Icons.search,
+                    const Icon(
+                      FontAwesomeIcons.search,
                       color: buttonText,
                       size: 20,
                     ),
@@ -608,8 +610,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.photo_library,
+            const Icon(
+              FontAwesomeIcons.images,
               size: 50,
               color: textGrey,
             ),
@@ -679,7 +681,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: surface,
                       child: Center(
                         child: Icon(
-                          Icons.person,
+                          FontAwesomeIcons.user,
                           size: 30,
                           color: primary.withOpacity(0.6),
                         ),
@@ -693,7 +695,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   color: surface,
                   child: Center(
                     child: Icon(
-                      Icons.person,
+                      FontAwesomeIcons.user,
                       size: 30,
                       color: primary.withOpacity(0.6),
                     ),
@@ -738,7 +740,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               ListTile(
-                leading: const Icon(Icons.visibility, color: primary),
+                leading: const Icon(FontAwesomeIcons.eye, color: primary),
                 title: const Text(
                   'View Photo',
                   style: TextStyle(
@@ -752,7 +754,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.delete, color: Colors.red),
+                leading: const Icon(FontAwesomeIcons.trash, color: Colors.red),
                 title: const Text(
                   'Delete Photo',
                   style: TextStyle(
@@ -767,7 +769,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const Divider(color: textGrey),
               ListTile(
-                leading: const Icon(Icons.cancel, color: textGrey),
+                leading: const Icon(FontAwesomeIcons.xmark, color: textGrey),
                 title: const Text(
                   'Cancel',
                   style: TextStyle(
@@ -816,7 +818,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: surface,
                           child: Center(
                             child: Icon(
-                              Icons.person,
+                              FontAwesomeIcons.user,
                               size: 100,
                               color: primary.withOpacity(0.6),
                             ),
@@ -839,7 +841,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
-                            Icons.close,
+                            FontAwesomeIcons.xmark,
                             color: Colors.white,
                             size: 24,
                           ),
@@ -948,7 +950,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               ListTile(
-                leading: const Icon(Icons.photo_library, color: primary),
+                leading: const Icon(FontAwesomeIcons.images, color: primary),
                 title: const Text(
                   'Choose from Gallery',
                   style: TextStyle(
@@ -962,7 +964,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: primary),
+                leading: const Icon(FontAwesomeIcons.camera, color: primary),
                 title: const Text(
                   'Take a Photo',
                   style: TextStyle(
@@ -977,7 +979,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const Divider(color: textGrey),
               ListTile(
-                leading: const Icon(Icons.cancel, color: textGrey),
+                leading: const Icon(FontAwesomeIcons.xmark, color: textGrey),
                 title: const Text(
                   'Cancel',
                   style: TextStyle(
@@ -985,9 +987,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontFamily: 'Regular',
                   ),
                 ),
-                onTap: () {
-                  Navigator.pop(context);
-                },
               ),
             ],
           ),
@@ -1138,8 +1137,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.add_a_photo,
+            const Icon(
+              FontAwesomeIcons.camera,
               size: 35,
               color: primary,
             ),
@@ -1238,7 +1237,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               ListTile(
-                leading: const Icon(Icons.photo_library, color: primary),
+                leading: const Icon(FontAwesomeIcons.images, color: primary),
                 title: const Text(
                   'Choose from Gallery',
                   style: TextStyle(
@@ -1252,7 +1251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: primary),
+                leading: const Icon(FontAwesomeIcons.camera, color: primary),
                 title: const Text(
                   'Take a Photo',
                   style: TextStyle(
@@ -1267,7 +1266,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const Divider(color: textGrey),
               ListTile(
-                leading: const Icon(Icons.cancel, color: textGrey),
+                leading: const Icon(FontAwesomeIcons.xmark, color: textGrey),
                 title: const Text(
                   'Cancel',
                   style: TextStyle(

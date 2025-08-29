@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
 import '../../utils/colors.dart';
 import '../../services/auth_service.dart';
@@ -30,7 +31,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textLight),
+          icon: const Icon(FontAwesomeIcons.arrowLeft, color: textLight),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -84,7 +85,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      Icons.photo_library,
+                      FontAwesomeIcons.images,
                       color: primary,
                       size: 24,
                     ),
@@ -187,7 +188,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                                       borderRadius: BorderRadius.circular(12.5),
                                     ),
                                     child: const Icon(
-                                      Icons.close,
+                                      FontAwesomeIcons.xmark,
                                       color: textLight,
                                       size: 14,
                                     ),
@@ -200,7 +201,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
-                                Icons.add_a_photo,
+                                FontAwesomeIcons.camera,
                                 size: 30,
                                 color: primary.withOpacity(0.6),
                               ),
@@ -365,7 +366,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           child: const Icon(
-                            Icons.close,
+                            FontAwesomeIcons.xmark,
                             color: textLight,
                             size: 18,
                           ),
@@ -379,7 +380,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.add_photo_alternate,
+                    FontAwesomeIcons.images,
                     size: 40,
                     color: primary.withOpacity(0.6),
                   ),
@@ -418,7 +419,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_library, color: primary),
+                leading: const Icon(FontAwesomeIcons.images, color: primary),
                 title: const Text(
                   'Choose from Gallery',
                   style: TextStyle(
@@ -432,7 +433,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: primary),
+                leading: const Icon(FontAwesomeIcons.camera, color: primary),
                 title: const Text(
                   'Take a Photo',
                   style: TextStyle(
@@ -472,7 +473,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                leading: const Icon(Icons.photo_library, color: primary),
+                leading: const Icon(FontAwesomeIcons.images, color: primary),
                 title: const Text(
                   'Choose from Gallery',
                   style: TextStyle(
@@ -486,7 +487,7 @@ class _ImageUploadScreenState extends State<ImageUploadScreen> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.camera_alt, color: primary),
+                leading: const Icon(FontAwesomeIcons.camera, color: primary),
                 title: const Text(
                   'Take a Photo',
                   style: TextStyle(

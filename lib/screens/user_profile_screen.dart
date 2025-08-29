@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/colors.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(
-            Icons.arrow_back,
+            FontAwesomeIcons.arrowLeft,
             color: textLight,
           ),
           onPressed: () => Navigator.pop(context),
@@ -80,7 +81,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                     child: const Icon(
-                      Icons.person,
+                      FontAwesomeIcons.user,
                       color: textLight,
                       size: 50,
                     ),
@@ -117,7 +118,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Icon(
-                        Icons.location_on,
+                        FontAwesomeIcons.locationDot,
                         color: accent,
                         size: 16,
                       ),

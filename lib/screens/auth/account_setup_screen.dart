@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/colors.dart';
 import '../../services/auth_service.dart';
 
@@ -35,7 +36,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textLight),
+          icon: const Icon(FontAwesomeIcons.arrowLeft, color: textLight),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -87,7 +88,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                           controller: _nameController,
                           label: 'Full Name',
                           hint: 'Enter your full name',
-                          icon: Icons.person,
+                          icon: FontAwesomeIcons.user,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your name';
@@ -103,7 +104,7 @@ class _AccountSetupScreenState extends State<AccountSetupScreen> {
                           controller: _ageController,
                           label: 'Age',
                           hint: 'Enter your age',
-                          icon: Icons.cake,
+                          icon: FontAwesomeIcons.cakeCandles,
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value == null || value.isEmpty) {

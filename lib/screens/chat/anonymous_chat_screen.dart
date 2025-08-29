@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../utils/colors.dart';
 
 class AnonymousChatScreen extends StatefulWidget {
@@ -111,10 +112,11 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
     return Scaffold(
       backgroundColor: background,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textLight),
+          icon: const Icon(FontAwesomeIcons.arrowLeft,
+              color: textLight, size: 20),
           onPressed: () => _showEndChatDialog(),
         ),
         title: Row(
@@ -130,8 +132,8 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                   return Transform.scale(
                     scale: _isAnimating ? _avatarScaleAnimation.value : 1.0,
                     child: Container(
-                      width: 35,
-                      height: 35,
+                      width: 40,
+                      height: 40,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         color: accent.withOpacity(0.2),
@@ -142,29 +144,29 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                         boxShadow: _isAnimating
                             ? [
                                 BoxShadow(
-                                  color: accent.withOpacity(0.3),
-                                  blurRadius: 10,
-                                  spreadRadius: 2,
+                                  color: accent.withOpacity(0.4),
+                                  blurRadius: 12,
+                                  spreadRadius: 3,
                                 ),
                               ]
                             : null,
                       ),
                       child: _isRevealed
                           ? ClipRRect(
-                              borderRadius: BorderRadius.circular(17.5),
+                              borderRadius: BorderRadius.circular(20),
                               child: Container(
                                 color: accent,
                                 child: const Icon(
-                                  Icons.person,
+                                  FontAwesomeIcons.user,
                                   color: textLight,
-                                  size: 20,
+                                  size: 22,
                                 ),
                               ),
                             )
                           : const Icon(
-                              Icons.person,
+                              FontAwesomeIcons.user,
                               color: accent,
-                              size: 20,
+                              size: 22,
                             ),
                     ),
                   );
@@ -172,29 +174,50 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
               ),
             ),
 
-            const SizedBox(width: 8),
+            const SizedBox(width: 12),
 
             GestureDetector(
               onTap: _isRevealed
                   ? () => _showUserProfile(_userBName, _userBAge, _userBCity)
                   : null,
-              child: Text(
-                _isRevealed ? _userBName : 'Anonymous',
-                style: TextStyle(
-                  color: textLight,
-                  fontFamily: 'Medium',
-                  fontSize: 16,
-                  decoration: _isRevealed
-                      ? TextDecoration.underline
-                      : TextDecoration.none,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _isRevealed ? _userBName : 'Anonymous',
+                    style: TextStyle(
+                      color: textLight,
+                      fontFamily: 'Medium',
+                      fontSize: 17,
+                      decoration: _isRevealed
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
+                    ),
+                  ),
+                  Text(
+                    'Online',
+                    style: TextStyle(
+                      color: _isRevealed ? primary : textGrey,
+                      fontSize: 12,
+                      fontFamily: 'Regular',
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
         actions: [
+          // Reveal Button (if not revealed and can reveal)
+          if (!_isRevealed && _canReveal)
+            IconButton(
+              icon: const Icon(FontAwesomeIcons.eye, color: accent, size: 20),
+              onPressed: _showRevealDialog,
+              tooltip: 'Reveal Identity',
+            ),
           IconButton(
-            icon: const Icon(Icons.more_vert, color: textLight),
+            icon: const Icon(FontAwesomeIcons.ellipsisVertical,
+                color: textLight, size: 20),
             onPressed: () => _showChatOptions(),
           ),
         ],
@@ -217,41 +240,6 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
             ),
           ),
 
-          // Reveal Button (if not revealed and can reveal)
-          if (!_isRevealed && _canReveal)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Container(
-                width: double.infinity,
-                height: 45,
-                decoration: BoxDecoration(
-                  color: accent.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: accent.withOpacity(0.3),
-                    width: 1,
-                  ),
-                ),
-                child: TextButton.icon(
-                  onPressed: _showRevealDialog,
-                  icon: const Icon(
-                    Icons.visibility,
-                    color: accent,
-                    size: 20,
-                  ),
-                  label: const Text(
-                    'Reveal Myself',
-                    style: TextStyle(
-                      color: accent,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Medium',
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
           // Message Input
           Container(
             padding: const EdgeInsets.all(16),
@@ -272,7 +260,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                       color: background,
                       borderRadius: BorderRadius.circular(25),
                       border: Border.all(
-                        color: primary.withOpacity(0.2),
+                        color: primary.withOpacity(0.3),
                         width: 1,
                       ),
                     ),
@@ -291,7 +279,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 20,
-                          vertical: 12,
+                          vertical: 14,
                         ),
                       ),
                       maxLines: null,
@@ -300,21 +288,29 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 ),
                 const SizedBox(width: 12),
                 Container(
-                  width: 45,
-                  height: 45,
+                  width: 50,
+                  height: 50,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [primary, primary.withOpacity(0.8)],
                     ),
-                    borderRadius: BorderRadius.circular(22.5),
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: primary.withOpacity(0.4),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: IconButton(
                     onPressed: _sendMessage,
                     icon: const Icon(
-                      Icons.send,
+                      FontAwesomeIcons.paperPlane,
                       color: textLight,
                       size: 20,
                     ),
+                    padding: EdgeInsets.zero,
                   ),
                 ),
               ],
@@ -326,6 +322,35 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
   }
 
   Widget _buildMessageBubble(ChatMessage message) {
+    bool isSystemMessage = message.isSystemMessage;
+
+    if (isSystemMessage) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            decoration: BoxDecoration(
+              color: primary.withOpacity(0.15),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: primary.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Text(
+              message.text,
+              style: TextStyle(
+                color: primary,
+                fontFamily: 'Medium',
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -336,91 +361,98 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
           if (!message.isFromUser) ...[
             // Other user's avatar
             Container(
-              width: 30,
-              height: 30,
+              width: 32,
+              height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: accent.withOpacity(0.2),
                 border: Border.all(
                   color: accent,
-                  width: 1,
+                  width: 1.5,
                 ),
               ),
               child: _isRevealed
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(16),
                       child: Container(
                         color: accent,
                         child: const Icon(
-                          Icons.person,
+                          FontAwesomeIcons.user,
                           color: textLight,
-                          size: 16,
+                          size: 18,
                         ),
                       ),
                     )
                   : const Icon(
-                      Icons.person,
+                      FontAwesomeIcons.user,
                       color: accent,
-                      size: 16,
+                      size: 18,
                     ),
             ),
 
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
           ],
           Flexible(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
               decoration: BoxDecoration(
                 color: message.isFromUser ? primary : surface,
-                borderRadius: BorderRadius.circular(18),
+                borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: message.isFromUser
                       ? Colors.transparent
                       : primary.withOpacity(0.2),
                   width: 1,
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
               ),
               child: Text(
                 message.text,
                 style: TextStyle(
                   color: message.isFromUser ? textLight : textLight,
                   fontFamily: 'Regular',
-                  fontSize: 14,
+                  fontSize: 15,
                 ),
               ),
             ),
           ),
           if (message.isFromUser) ...[
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
 
             // Current user's avatar
             Container(
-              width: 30,
-              height: 30,
+              width: 32,
+              height: 32,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: primary.withOpacity(0.2),
                 border: Border.all(
                   color: primary,
-                  width: 1,
+                  width: 1.5,
                 ),
               ),
               child: _isRevealed
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(16),
                       child: Container(
                         color: primary,
                         child: const Icon(
-                          Icons.person,
+                          FontAwesomeIcons.user,
                           color: textLight,
-                          size: 16,
+                          size: 18,
                         ),
                       ),
                     )
                   : const Icon(
-                      Icons.person,
+                      FontAwesomeIcons.user,
                       color: primary,
-                      size: 16,
+                      size: 18,
                     ),
             ),
           ],
@@ -463,13 +495,14 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
         return AlertDialog(
           backgroundColor: surface,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
           ),
           title: const Text(
             'Reveal Your Identity',
             style: TextStyle(
               color: textLight,
               fontFamily: 'Bold',
+              fontSize: 20,
             ),
           ),
           content: const Text(
@@ -477,6 +510,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
             style: TextStyle(
               color: textGrey,
               fontFamily: 'Regular',
+              fontSize: 15,
             ),
           ),
           actions: [
@@ -487,6 +521,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 style: TextStyle(
                   color: textGrey,
                   fontFamily: 'Medium',
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -495,7 +530,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 gradient: LinearGradient(
                   colors: [accent, accent.withOpacity(0.8)],
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: TextButton(
                 onPressed: () {
@@ -507,6 +542,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                   style: TextStyle(
                     color: textLight,
                     fontFamily: 'Medium',
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -546,13 +582,14 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
         return AlertDialog(
           backgroundColor: surface,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
           ),
           title: const Text(
             'Reveal Request',
             style: TextStyle(
               color: textLight,
               fontFamily: 'Bold',
+              fontSize: 20,
             ),
           ),
           content: const Text(
@@ -560,13 +597,14 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
             style: TextStyle(
               color: textGrey,
               fontFamily: 'Regular',
+              fontSize: 15,
             ),
           ),
           actions: [
             Container(
               decoration: BoxDecoration(
                 color: Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(
                   color: Colors.red,
                   width: 1,
@@ -582,6 +620,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                   style: TextStyle(
                     color: Colors.red,
                     fontFamily: 'Medium',
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -591,7 +630,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 gradient: LinearGradient(
                   colors: [accent, accent.withOpacity(0.8)],
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: TextButton(
                 onPressed: () {
@@ -603,6 +642,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                   style: TextStyle(
                     color: textLight,
                     fontFamily: 'Medium',
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -705,13 +745,14 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
         return AlertDialog(
           backgroundColor: surface,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(20),
           ),
           title: const Text(
             'End Chat',
             style: TextStyle(
               color: textLight,
               fontFamily: 'Bold',
+              fontSize: 20,
             ),
           ),
           content: const Text(
@@ -719,6 +760,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
             style: TextStyle(
               color: textGrey,
               fontFamily: 'Regular',
+              fontSize: 15,
             ),
           ),
           actions: [
@@ -729,6 +771,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 style: TextStyle(
                   color: textGrey,
                   fontFamily: 'Medium',
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -737,7 +780,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                 gradient: LinearGradient(
                   colors: [Colors.red, Colors.red.withOpacity(0.8)],
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: TextButton(
                 onPressed: () {
@@ -749,6 +792,7 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
                   style: TextStyle(
                     color: textLight,
                     fontFamily: 'Medium',
+                    fontSize: 16,
                   ),
                 ),
               ),
@@ -782,28 +826,31 @@ class _AnonymousChatScreenState extends State<AnonymousChatScreen>
       context: context,
       backgroundColor: surface,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(25),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: 40,
-              height: 4,
+              width: 45,
+              height: 5,
               decoration: BoxDecoration(
-                color: textGrey.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(2),
+                color: textGrey.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(3),
               ),
             ),
+            const SizedBox(height: 25),
             ListTile(
-              leading: const Icon(Icons.close, color: textLight),
+              leading: const Icon(FontAwesomeIcons.xmark,
+                  color: textLight, size: 22),
               title: const Text(
                 'End Chat',
                 style: TextStyle(
                   color: textLight,
                   fontFamily: 'Medium',
+                  fontSize: 17,
                 ),
               ),
               onTap: () {

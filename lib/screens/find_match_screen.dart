@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/colors.dart';
 
 class FindMatchScreen extends StatefulWidget {
@@ -88,7 +89,7 @@ class _FindMatchScreenState extends State<FindMatchScreen>
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: textLight),
+          icon: const Icon(FontAwesomeIcons.arrowLeft, color: textLight),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
@@ -142,7 +143,7 @@ class _FindMatchScreenState extends State<FindMatchScreen>
                             return Transform.rotate(
                               angle: _rotationAnimation.value * 2 * 3.14159,
                               child: Icon(
-                                Icons.radar,
+                                FontAwesomeIcons.satellite,
                                 size: 80,
                                 color: primary,
                               ),
@@ -219,7 +220,7 @@ class _FindMatchScreenState extends State<FindMatchScreen>
                 child: Column(
                   children: [
                     Icon(
-                      Icons.lightbulb_outline,
+                      FontAwesomeIcons.lightbulb,
                       color: accent,
                       size: 30,
                     ),
