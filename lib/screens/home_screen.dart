@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:io';
 import '../utils/colors.dart';
+import 'full_screen_image_viewer.dart';
 import '../services/auth_service.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -791,68 +792,13 @@ class _HomeScreenState extends State<HomeScreen> {
   // View photo in full screen
   void _viewPhoto(int index) {
     if (_userImages.isNotEmpty && index < _userImages.length) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return Dialog(
-            backgroundColor: Colors.transparent,
-            child: Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.8,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Stack(
-                  children: [
-                    Image.network(
-                      _userImages[index],
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          color: surface,
-                          child: Center(
-                            child: Icon(
-                              FontAwesomeIcons.user,
-                              size: 100,
-                              color: primary.withOpacity(0.6),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    // Close button
-                    Positioned(
-                      top: 15,
-                      right: 15,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            FontAwesomeIcons.xmark,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
+      Navigator.pushNamed(
+        context,
+        '/full-screen-image',
+        arguments: {
+          'imagePath': _userImages[index],
+          'userName': _userName,
+          'isNetworkImage': true,
         },
       );
     }

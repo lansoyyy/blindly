@@ -88,6 +88,7 @@ class AuthService {
           'lastLoginAt': FieldValue.serverTimestamp(),
           'profileSetup': false,
           'imagesUploaded': false,
+          'matchUserId': '',
         });
       } else {
         // Update last login time

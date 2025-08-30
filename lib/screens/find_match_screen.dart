@@ -143,7 +143,7 @@ class _FindMatchScreenState extends State<FindMatchScreen>
                             return Transform.rotate(
                               angle: _rotationAnimation.value * 2 * 3.14159,
                               child: Icon(
-                                FontAwesomeIcons.satellite,
+                                Icons.radar_rounded,
                                 size: 80,
                                 color: primary,
                               ),

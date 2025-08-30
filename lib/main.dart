@@ -13,6 +13,7 @@ import 'screens/mechanics_screen.dart';
 import 'screens/chat/anonymous_chat_screen.dart';
 import 'screens/user_profile_screen.dart';
 import 'screens/chat/identities_revealed_screen.dart';
+import 'screens/full_screen_image_viewer.dart';
 import 'utils/colors.dart';
 
 void main() async {
@@ -67,6 +68,15 @@ class BlindlyApp extends StatelessWidget {
             userAAge: args['userAAge'],
             userBName: args['userBName'],
             userBAge: args['userBAge'],
+          );
+        },
+        '/full-screen-image': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments
+              as Map<String, dynamic>;
+          return FullScreenImageViewer(
+            imagePath: args['imagePath'],
+            userName: args['userName'],
+            isNetworkImage: args['isNetworkImage'] ?? false,
           );
         },
       },

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../utils/colors.dart';
+import 'full_screen_image_viewer.dart';
 
 class UserProfileScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
@@ -26,7 +27,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     final String name = widget.userData['name'] ?? 'Unknown';
     final String age = widget.userData['age'] ?? 'Unknown';
-    final String city = widget.userData['city'] ?? 'Unknown';
+    final String bio = widget.userData['bio'] ?? 'No bio available';
 
     return Scaffold(
       backgroundColor: background,
@@ -62,6 +63,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   bottomLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 15,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
               ),
               child: Column(
                 children: [
@@ -71,12 +79,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     height: 100,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: primary,
+                      gradient: LinearGradient(
+                        colors: [primary, accent],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: primary.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 5),
+                          color: primary.withOpacity(0.4),
+                          blurRadius: 20,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
@@ -87,14 +99,14 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                   ),
 
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 20),
 
                   // Name and Age
                   Text(
                     name,
                     style: const TextStyle(
                       color: textLight,
-                      fontSize: 24,
+                      fontSize: 26,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Bold',
                     ),
@@ -109,29 +121,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       fontSize: 16,
                       fontFamily: 'Regular',
                     ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // Location
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        FontAwesomeIcons.locationDot,
-                        color: accent,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        city,
-                        style: const TextStyle(
-                          color: textGrey,
-                          fontSize: 14,
-                          fontFamily: 'Regular',
-                        ),
-                      ),
-                    ],
                   ),
 
                   const SizedBox(height: 20),
@@ -151,6 +140,62 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
             const SizedBox(height: 20),
 
+            // Bio Section
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: surface,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 15,
+                    offset: const Offset(0, 5),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Bio',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: textLight,
+                      fontFamily: 'Bold',
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: background,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: primary.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      bio,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: textLight,
+                        fontFamily: 'Regular',
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
             // Photos Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -161,7 +206,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     'Photos',
                     style: TextStyle(
                       color: textLight,
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Bold',
                     ),
@@ -182,23 +227,26 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                     itemCount: _photos.length,
                     itemBuilder: (context, index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: surface,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              blurRadius: 5,
-                              offset: const Offset(0, 2),
+                      return GestureDetector(
+                        onTap: () => _showFullScreenImage(index),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: surface,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 5,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(15),
+                            child: Image.asset(
+                              _photos[index],
+                              fit: BoxFit.cover,
                             ),
-                          ],
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Image.asset(
-                            _photos[index],
-                            fit: BoxFit.cover,
                           ),
                         ),
                       );
@@ -237,6 +285,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  void _showFullScreenImage(int index) {
+    final String name = widget.userData['name'] ?? 'Unknown';
+
+    Navigator.pushNamed(
+      context,
+      '/full-screen-image',
+      arguments: {
+        'imagePath': _photos[index],
+        'userName': name,
+        'isNetworkImage': false,
+      },
     );
   }
 }
